@@ -233,6 +233,11 @@ async function subsetFont(inputPath, outputPath, unicodeRange, subsetTool, subse
 
         console.log(`    📄 处理: ${subsetName}`);
 
+        if (await fs.stat(outputPath).catch(() => false)) {
+            console.log(`    字体文件已存在: ${path.basename(outputPath)}。跳过。`);
+            return { success: true, size: 0 };
+        }
+
         execSync(command, { stdio: "pipe" });
 
         // 检查文件是否生成并获取大小
@@ -407,7 +412,7 @@ function generateIndexHTML(processedFonts) {
 
     <script>
         function getDynamicDomain() {
-            return window.location.origin + window.location.pathname.replace('/index.html', '').replace(/\\/$/, '');
+            return window.location.origin + window.location.pathname.replace('index.html', 'fonts/').replace(/\\/$/, '');
         }
 
         function copyToClipboard(type, fontName) {
@@ -448,20 +453,6 @@ function generateIndexHTML(processedFonts) {
     </script>
 </body>
 </html>`;
-}
-
-async function resetFolder(folderPath) {
-  try {
-    // Remove folder if it exists
-    await fs.rm(folderPath, { recursive: true, force: true });
-    console.log("🗑️ Removed existing folder");
-  } catch (err) {
-    console.log("⚠️ Nothing to remove (folder not found)");
-  }
-
-  // Create new folder
-  await fs.mkdir(folderPath, { recursive: true });
-  console.log("📂 Created fresh folder");
 }
 
 // 主函数
@@ -520,7 +511,7 @@ async function main() {
 
         // 创建输出目录
         console.log("\n📁 准备输出目录...");
-        await resetFolder(outputDir);
+        await fs.mkdir(outputDir, { recursive: true });
         console.log(`✅ 输出目录就绪: ${outputDir}`);
 
         // 获取当前模式的子集配置

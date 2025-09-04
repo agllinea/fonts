@@ -1,181 +1,181 @@
 /* 
- * 思源黑体 字体子集
- * 生成时间: 2025-09-04T06:57:22.543Z
+ * PT Mono 字体子集
+ * 生成时间: 2025-09-04T06:57:22.128Z
  * 处理模式: full
- * 字体信息: 思源黑体 (Weight: 400, Style: normal)
+ * 字体信息: PT Mono (Weight: 400, Style: normal)
  * 子集数量: 17
  */
 
 @font-face {
-  font-family: '思源黑体';
+  font-family: 'PT Mono';
   font-style: normal;
   font-weight: 400;
   font-display: swap;
-  src: url('./SourceHanSansSC-Regular-latin.woff2') format('woff2');
+  src: url('./PTMono-Regular-latin.woff2') format('woff2');
   unicode-range: U+0000-00FF,U+0131,U+0152-0153,U+02BB-02BC,U+02C6,U+02DA,U+02DC;
 }
 
 @font-face {
-  font-family: '思源黑体';
+  font-family: 'PT Mono';
   font-style: normal;
   font-weight: 400;
   font-display: swap;
-  src: url('./SourceHanSansSC-Regular-latin-ext.woff2') format('woff2');
+  src: url('./PTMono-Regular-latin-ext.woff2') format('woff2');
   unicode-range: U+0100-024F,U+0259,U+1E00-1EFF,U+2020,U+20A0-20AB,U+20AD-20CF,U+2113,U+2C60-2C7F,U+A720-A7FF;
 }
 
 @font-face {
-  font-family: '思源黑体';
+  font-family: 'PT Mono';
   font-style: normal;
   font-weight: 400;
   font-display: swap;
-  src: url('./SourceHanSansSC-Regular-numbers.woff2') format('woff2');
+  src: url('./PTMono-Regular-numbers.woff2') format('woff2');
   unicode-range: U+0030-0039,U+FF10-FF19;
 }
 
 @font-face {
-  font-family: '思源黑体';
+  font-family: 'PT Mono';
   font-style: normal;
   font-weight: 400;
   font-display: swap;
-  src: url('./SourceHanSansSC-Regular-symbols.woff2') format('woff2');
+  src: url('./PTMono-Regular-symbols.woff2') format('woff2');
   unicode-range: U+2000-206F,U+2070-209F,U+20A0-20CF,U+2100-214F;
 }
 
 @font-face {
-  font-family: '思源黑体';
+  font-family: 'PT Mono';
   font-style: normal;
   font-weight: 400;
   font-display: swap;
-  src: url('./SourceHanSansSC-Regular-cjk-symbols.woff2') format('woff2');
+  src: url('./PTMono-Regular-cjk-symbols.woff2') format('woff2');
   unicode-range: U+3000-303F,U+FF00-FFEF,U+2E80-2EFF,U+31C0-31EF;
 }
 
 @font-face {
-  font-family: '思源黑体';
+  font-family: 'PT Mono';
   font-style: normal;
   font-weight: 400;
   font-display: swap;
-  src: url('./SourceHanSansSC-Regular-cjk-basic.woff2') format('woff2');
+  src: url('./PTMono-Regular-cjk-basic.woff2') format('woff2');
   unicode-range: U+4E00-4FFF;
 }
 
 @font-face {
-  font-family: '思源黑体';
+  font-family: 'PT Mono';
   font-style: normal;
   font-weight: 400;
   font-display: swap;
-  src: url('./SourceHanSansSC-Regular-cjk-common.woff2') format('woff2');
+  src: url('./PTMono-Regular-cjk-common.woff2') format('woff2');
   unicode-range: U+5000-5FFF;
 }
 
 @font-face {
-  font-family: '思源黑体';
+  font-family: 'PT Mono';
   font-style: normal;
   font-weight: 400;
   font-display: swap;
-  src: url('./SourceHanSansSC-Regular-cjk-extended-1.woff2') format('woff2');
+  src: url('./PTMono-Regular-cjk-extended-1.woff2') format('woff2');
   unicode-range: U+6000-6FFF;
 }
 
 @font-face {
-  font-family: '思源黑体';
+  font-family: 'PT Mono';
   font-style: normal;
   font-weight: 400;
   font-display: swap;
-  src: url('./SourceHanSansSC-Regular-cjk-extended-2.woff2') format('woff2');
+  src: url('./PTMono-Regular-cjk-extended-2.woff2') format('woff2');
   unicode-range: U+7000-7FFF;
 }
 
 @font-face {
-  font-family: '思源黑体';
+  font-family: 'PT Mono';
   font-style: normal;
   font-weight: 400;
   font-display: swap;
-  src: url('./SourceHanSansSC-Regular-cjk-extended-3.woff2') format('woff2');
+  src: url('./PTMono-Regular-cjk-extended-3.woff2') format('woff2');
   unicode-range: U+8000-8FFF;
 }
 
 @font-face {
-  font-family: '思源黑体';
+  font-family: 'PT Mono';
   font-style: normal;
   font-weight: 400;
   font-display: swap;
-  src: url('./SourceHanSansSC-Regular-cjk-extended-4.woff2') format('woff2');
+  src: url('./PTMono-Regular-cjk-extended-4.woff2') format('woff2');
   unicode-range: U+9000-9FFF;
 }
 
 @font-face {
-  font-family: '思源黑体';
+  font-family: 'PT Mono';
   font-style: normal;
   font-weight: 400;
   font-display: swap;
-  src: url('./SourceHanSansSC-Regular-cjk-ext-a.woff2') format('woff2');
+  src: url('./PTMono-Regular-cjk-ext-a.woff2') format('woff2');
   unicode-range: U+3400-4DBF;
 }
 
 @font-face {
-  font-family: '思源黑体';
+  font-family: 'PT Mono';
   font-style: normal;
   font-weight: 400;
   font-display: swap;
-  src: url('./SourceHanSansSC-Regular-hiragana.woff2') format('woff2');
+  src: url('./PTMono-Regular-hiragana.woff2') format('woff2');
   unicode-range: U+3040-309F;
 }
 
 @font-face {
-  font-family: '思源黑体';
+  font-family: 'PT Mono';
   font-style: normal;
   font-weight: 400;
   font-display: swap;
-  src: url('./SourceHanSansSC-Regular-katakana.woff2') format('woff2');
+  src: url('./PTMono-Regular-katakana.woff2') format('woff2');
   unicode-range: U+30A0-30FF;
 }
 
 @font-face {
-  font-family: '思源黑体';
+  font-family: 'PT Mono';
   font-style: normal;
   font-weight: 400;
   font-display: swap;
-  src: url('./SourceHanSansSC-Regular-korean.woff2') format('woff2');
+  src: url('./PTMono-Regular-korean.woff2') format('woff2');
   unicode-range: U+AC00-D7AF,U+1100-11FF,U+3130-318F;
 }
 
 @font-face {
-  font-family: '思源黑体';
+  font-family: 'PT Mono';
   font-style: normal;
   font-weight: 400;
   font-display: swap;
-  src: url('./SourceHanSansSC-Regular-greek.woff2') format('woff2');
+  src: url('./PTMono-Regular-greek.woff2') format('woff2');
   unicode-range: U+0370-03FF;
 }
 
 @font-face {
-  font-family: '思源黑体';
+  font-family: 'PT Mono';
   font-style: normal;
   font-weight: 400;
   font-display: swap;
-  src: url('./SourceHanSansSC-Regular-cyrillic.woff2') format('woff2');
+  src: url('./PTMono-Regular-cyrillic.woff2') format('woff2');
   unicode-range: U+0400-045F,U+0490-0491,U+04B0-04B1,U+2116;
 }
 
 /*
  * 📊 统计信息:
- * - 原始大小: 15.76MB
- * - 子集总大小: 0.00MB
- * - 压缩比: 100.0%
+ * - 原始大小: 0.16MB
+ * - 子集总大小: 0.03MB
+ * - 压缩比: 81.7%
  * - 子集数量: 17
  *
  * 🎯 使用方法:
  * .chinese-text {
- *   font-family: '思源黑体', 'PingFang SC', 'Hiragino Sans GB', 
+ *   font-family: 'PT Mono', 'PingFang SC', 'Hiragino Sans GB', 
  *                'Microsoft YaHei', 'Source Han Sans CN', sans-serif;
  *   font-weight: 400;
  *   font-style: normal;
  * }
  *
  * .english-text {
- *   font-family: '思源黑体', 'Helvetica Neue', Arial, sans-serif;
+ *   font-family: 'PT Mono', 'Helvetica Neue', Arial, sans-serif;
  *   font-weight: 400;
  *   font-style: normal;
  * }
