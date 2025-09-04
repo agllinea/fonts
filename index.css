@@ -107,10 +107,10 @@ body {
     position: fixed;
     top: 20px;
     right: 20px;
-    background: #28a745;
-    color: white;
+    background: white;
+    color: black;
+    border: 1px solid black;
     padding: 12px 20px;
-    border-radius: 8px;
     box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
     opacity: 0;
     transform: translateX(100%);
@@ -152,10 +152,10 @@ body {
 
 ::-webkit-scrollbar-track {
     background-color: transparent;
-    border-radius: 8px;
+    border-radius: 4px;
 }
 
 ::-webkit-scrollbar-thumb {
-    background-color: #a1a1a180;
-    border-radius: 8px;
+    background-color: #000000;
+    border: 2px solid white;
 }
