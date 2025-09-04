@@ -1,0 +1,22 @@
+{
+  "name": "fonts",
+  "version": "1.0.0",
+  "type": "module",
+  "scripts": {
+    "start": "node font-optimizer.js --mode minimal",
+    "build": "node font-optimizer.js --mode full",
+    "subset:minimal": "node font-optimizer.js --mode minimal",
+    "subset:standard": "node font-optimizer.js --mode standard",
+    "subset:full": "node font-optimizer.js --mode full",
+    "help": "node font-optimizer.js --help"
+  },
+  "license": "MIT",
+  "engines": {
+    "node": ">=14.0.0",
+    "npm": ">=6.0.0"
+  },
+  "dependencies": {},
+  "devDependencies": {
+    "rimraf": "^3.0.2"
+  }
+}
