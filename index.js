@@ -1,4 +1,4 @@
-async function downloadFontsFromCss(cssPath) {
+async function downloadFonts(cssPath) {
     const zip = new JSZip();
 
     // Fetch CSS
