@@ -407,7 +407,7 @@ function generateIndexHTML(processedFonts) {
                     <button class="copy-btn copy-css" onclick="copyToClipboard('css', '${font.cssFileName}')">
                         Copy CSS
                     </button>
-                    <button class="copy-btn download-fonts" onclick="downloadFonts('${font.info.familyName}')">
+                    <button class="copy-btn download-fonts" onclick="downloadFonts('${font.cssFileName}')">
                         Download Fonts
                     </button>
                 </div>
