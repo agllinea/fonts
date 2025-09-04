@@ -4,6 +4,8 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Fonts 字体库</title>
+    <script src="https://cdn.jsdelivr.net/npm/jszip@3.11.1/dist/jszip.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/file-saver@2.0.5/dist/FileSaver.min.js"></script>
     <link rel="stylesheet" href="./index.css">
     <link rel="stylesheet" href="./fonts/PTMono-Regular.css">
     <link rel="stylesheet" href="./fonts/SourceHanSansSC-Bold.css">
@@ -49,6 +51,9 @@
                     <button class="copy-btn copy-css" onclick="copyToClipboard('css', 'PTMono-Regular')">
                         Copy CSS
                     </button>
+                    <button class="copy-btn download-fonts" onclick="downloadFonts('PT Mono')">
+                        Download Fonts
+                    </button>
                 </div>
             </div>
             
@@ -80,6 +85,9 @@
                     </button>
                     <button class="copy-btn copy-css" onclick="copyToClipboard('css', 'SourceHanSansSC-Bold')">
                         Copy CSS
+                    </button>
+                    <button class="copy-btn download-fonts" onclick="downloadFonts('思源黑体')">
+                        Download Fonts
                     </button>
                 </div>
             </div>
@@ -113,6 +121,9 @@
                     <button class="copy-btn copy-css" onclick="copyToClipboard('css', 'SourceHanSansSC-Regular')">
                         Copy CSS
                     </button>
+                    <button class="copy-btn download-fonts" onclick="downloadFonts('思源黑体')">
+                        Download Fonts
+                    </button>
                 </div>
             </div>
             
@@ -144,6 +155,9 @@
                     </button>
                     <button class="copy-btn copy-css" onclick="copyToClipboard('css', 'SourceHanSerifSC-Bold')">
                         Copy CSS
+                    </button>
+                    <button class="copy-btn download-fonts" onclick="downloadFonts('思源宋体')">
+                        Download Fonts
                     </button>
                 </div>
             </div>
@@ -177,12 +191,84 @@
                     <button class="copy-btn copy-css" onclick="copyToClipboard('css', 'SourceHanSerifSC-Regular')">
                         Copy CSS
                     </button>
+                    <button class="copy-btn download-fonts" onclick="downloadFonts('思源宋体')">
+                        Download Fonts
+                    </button>
                 </div>
             </div>
             
         </div>
     </div>
     <div class="toast" id="toast"></div>
-    <script src="index.js"></script>
+    <script>
+        async function downloadFonts(familyName) {
+    const zip = new JSZip();
+
+    // Fetch CSS
+    const cssUrl = `./fonts/${familyName}.css`;
+    const cssResp = await fetch(cssUrl);
+    if (!cssResp.ok) throw new Error(`CSS file not found: ${cssUrl}`);
+    const cssText = await cssResp.text();
+    zip.file(`${familyName}.css`, cssText);
+
+    // Fetch WOFF2 files (adjust the max number if needed)
+    const fontsFolder = zip.folder("fonts");
+    for (let i = 1; i <= 10; i++) {
+        const fileName = `${familyName}-${i}.woff2`;
+        try {
+            const resp = await fetch(`./fonts/${fileName}`);
+            if (!resp.ok) continue;
+            const buffer = await resp.arrayBuffer();
+            fontsFolder.file(fileName, buffer);
+        } catch {
+            console.warn(`Skipping missing font: ${fileName}`);
+        }
+    }
+
+    // Generate zip and trigger download
+    const blob = await zip.generateAsync({ type: "blob" });
+    saveAs(blob, `${familyName}.zip`);
+}
+
+function getDynamicDomain() {
+	return window.location.origin + '/fonts';
+}
+
+function copyToClipboard(type, fontName) {
+	const domain = getDynamicDomain();
+	let text = '';
+    
+	if (type === 'html') {
+		text = `<link rel="preconnect" href="${domain}">\n<link rel="stylesheet" href="${domain}/${fontName}.css">`;
+	} else if (type === 'css') {
+		text = `@import url('${domain}/${fontName}.css');`;
+	}
+    
+	navigator.clipboard.writeText(text).then(() => {
+		showToast(`${type.toUpperCase()} 链接已复制到剪贴板！`);
+	}).catch(err => {
+		console.error('复制失败:', err);
+		// Fallback method
+		const textArea = document.createElement('textarea');
+		textArea.value = text;
+		document.body.appendChild(textArea);
+		textArea.select();
+		document.execCommand('copy');
+		document.body.removeChild(textArea);
+		showToast(`${type.toUpperCase()} 链接已复制到剪贴板！`);
+	});
+}
+
+function showToast(message) {
+	const toast = document.getElementById('toast');
+	toast.textContent = message;
+	toast.classList.add('show');
+    
+	setTimeout(() => {
+		toast.classList.remove('show');
+	}, 3000);
+}
+
+    </script>
 </body>
 </html>

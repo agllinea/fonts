@@ -1,5 +1,6 @@
 import { execSync } from "child_process";
 import { promises as fs } from "fs";
+import { readFileSync } from "fs";
 import path from "path";
 
 console.log("=".repeat(60));
@@ -46,21 +47,21 @@ async function GetFontInfo(fontPath) {
     try {
         // 使用 ttx 工具提取字体元数据为XML格式
         const tempXmlPath = fontPath + '.temp.ttx';
-        
+
         // 只提取 name 表，这样更快且包含我们需要的所有信息
         const command = `python -m fontTools.ttx -t name -o "${tempXmlPath}" "${fontPath}"`;
-        
+
         execSync(command, { stdio: "pipe" });
-        
+
         // 读取生成的XML文件
         const xmlContent = await fs.readFile(tempXmlPath, 'utf8');
-        
+
         // 清理临时文件
-        await fs.unlink(tempXmlPath).catch(() => {});
-        
+        await fs.unlink(tempXmlPath).catch(() => { });
+
         // 解析字体信息
         const fontInfo = parseFontNameTable(xmlContent);
-        
+
         return {
             success: true,
             familyName: fontInfo.familyName || path.basename(fontPath, path.extname(fontPath)),
@@ -69,14 +70,14 @@ async function GetFontInfo(fontPath) {
             fullName: fontInfo.fullName || fontInfo.familyName,
             postScriptName: fontInfo.postScriptName || fontInfo.familyName
         };
-        
+
     } catch (error) {
         console.warn(`⚠️ 无法解析字体信息 ${path.basename(fontPath)}: ${error.message}`);
-        
+
         // 回退方案：从文件名推测信息
         const fileName = path.basename(fontPath, path.extname(fontPath));
         const fallbackInfo = inferFontInfoFromFilename(fileName);
-        
+
         return {
             success: false,
             familyName: fallbackInfo.familyName,
@@ -92,15 +93,15 @@ async function GetFontInfo(fontPath) {
 // 解析字体name表的XML内容
 function parseFontNameTable(xmlContent) {
     const nameRecord = {};
-    
+
     // 提取namerecord标签中的信息
     const nameRecordRegex = /<namerecord nameID="(\d+)"[^>]*>\s*([^<]*)\s*<\/namerecord>/g;
     let match;
-    
+
     while ((match = nameRecordRegex.exec(xmlContent)) !== null) {
         const nameId = parseInt(match[1]);
         const value = match[2].trim();
-        
+
         // 根据nameID映射到相应的字体属性
         switch (nameId) {
             case 1: // Family name
@@ -117,12 +118,12 @@ function parseFontNameTable(xmlContent) {
                 break;
         }
     }
-    
+
     // 解析weight和style
     const subfamily = nameRecord.subfamily || '';
     const weight = parseWeightFromSubfamily(subfamily);
     const style = parseStyleFromSubfamily(subfamily);
-    
+
     return {
         familyName: nameRecord.familyName,
         weight: weight,
@@ -135,7 +136,7 @@ function parseFontNameTable(xmlContent) {
 // 从subfamily名称解析weight
 function parseWeightFromSubfamily(subfamily) {
     const lower = subfamily.toLowerCase();
-    
+
     if (lower.includes('thin') || lower.includes('hairline')) return 100;
     if (lower.includes('extralight') || lower.includes('ultralight')) return 200;
     if (lower.includes('light')) return 300;
@@ -144,16 +145,16 @@ function parseWeightFromSubfamily(subfamily) {
     if (lower.includes('bold') && !lower.includes('extrabold')) return 700;
     if (lower.includes('extrabold') || lower.includes('ultrabold')) return 800;
     if (lower.includes('black') || lower.includes('heavy')) return 900;
-    
+
     return 400; // Regular/Normal
 }
 
 // 从subfamily名称解析style
 function parseStyleFromSubfamily(subfamily) {
     const lower = subfamily.toLowerCase();
-    
+
     if (lower.includes('italic') || lower.includes('oblique')) return 'italic';
-    
+
     return 'normal';
 }
 
@@ -163,13 +164,13 @@ function inferFontInfoFromFilename(fileName) {
     let cleanName = fileName
         .replace(/-(Regular|Bold|Light|Medium|Thin|Black|Heavy|ExtraBold|SemiBold|Italic|Oblique)/gi, '')
         .replace(/\.(woff2?|ttf|otf)$/i, '');
-    
+
     // 提取weight
     const weight = parseWeightFromSubfamily(fileName);
-    
+
     // 提取style
     const style = parseStyleFromSubfamily(fileName);
-    
+
     return {
         familyName: cleanName,
         weight: weight,
@@ -263,7 +264,7 @@ function generateCSS(fontInfo, successfulSubsets, totalOriginalSize) {
     const fontName = fontInfo.familyName;
     const fontWeight = fontInfo.weight;
     const fontStyle = fontInfo.style;
-    
+
     let css = `/* 
  * ${fontName} 字体子集
  * 生成时间: ${new Date().toISOString()}
@@ -355,12 +356,16 @@ function generateCSS(fontInfo, successfulSubsets, totalOriginalSize) {
 
 // 生成字体索引页面
 function generateIndexHTML(processedFonts) {
+    // TODO: Read string content from index.js
+    const indexJSContent = readFileSync("./index.js", "utf-8")
     return `<!DOCTYPE html>
 <html lang="zh-CN">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Fonts 字体库</title>
+    <script src="https://cdn.jsdelivr.net/npm/jszip@3.11.1/dist/jszip.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/file-saver@2.0.5/dist/FileSaver.min.js"></script>
     <link rel="stylesheet" href="./index.css">
     ${processedFonts.map(font => `<link rel="stylesheet" href="${outputDir}/${font.cssFileName}.css">`).join('\n    ')}
 </head>
@@ -402,13 +407,18 @@ function generateIndexHTML(processedFonts) {
                     <button class="copy-btn copy-css" onclick="copyToClipboard('css', '${font.cssFileName}')">
                         Copy CSS
                     </button>
+                    <button class="copy-btn download-fonts" onclick="downloadFonts('${font.info.familyName}')">
+                        Download Fonts
+                    </button>
                 </div>
             </div>
             `).join('')}
         </div>
     </div>
     <div class="toast" id="toast"></div>
-    <script src="index.js"></script>
+    <script>
+        ${indexJSContent}
+    </script>
 </body>
 </html>`;
 }
@@ -492,7 +502,7 @@ async function main() {
             // 获取字体信息
             console.log("📋 分析字体信息...");
             const fontInfo = await GetFontInfo(fontPath);
-            
+
             if (fontInfo.success) {
                 console.log(`✅ 字体信息:`);
                 console.log(`   🏷️ 家族名称: ${fontInfo.familyName}`);
@@ -585,7 +595,7 @@ async function main() {
         console.log(`   - GetFontInfo() 函数可以提取真实的字体族名、字重和样式`);
         console.log(`   - 生成的CSS会使用正确的font-weight和font-style值`);
         console.log(`   - 如果ttx解析失败，会从文件名推测字体信息`);
-        
+
     } catch (error) {
         console.error("\n💥 发生错误:", error.message);
         console.error(error.stack);
