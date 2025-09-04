@@ -1,30 +1,38 @@
-async function downloadFonts(familyName) {
+async function downloadFontsFromCss(cssPath) {
     const zip = new JSZip();
 
     // Fetch CSS
-    const cssUrl = `./fonts/${familyName}.css`;
-    const cssResp = await fetch(cssUrl);
-    if (!cssResp.ok) throw new Error(`CSS file not found: ${cssUrl}`);
+    const cssResp = await fetch(cssPath);
+    if (!cssResp.ok) throw new Error(`CSS file not found: ${cssPath}`);
     const cssText = await cssResp.text();
-    zip.file(`${familyName}.css`, cssText);
+    zip.file(cssPath.split("/").pop(), cssText); // add CSS to zip root
 
-    // Fetch WOFF2 files (adjust the max number if needed)
+    // Parse all url(...) references
+    const urlRegex = /url\(['"]?(.+?\.woff2)['"]?\)/g;
     const fontsFolder = zip.folder("fonts");
-    for (let i = 1; i <= 10; i++) {
-        const fileName = `${familyName}-${i}.woff2`;
-        try {
-            const resp = await fetch(`./fonts/${fileName}`);
-            if (!resp.ok) continue;
-            const buffer = await resp.arrayBuffer();
-            fontsFolder.file(fileName, buffer);
-        } catch {
-            console.warn(`Skipping missing font: ${fileName}`);
+    let match;
+    const fetchedUrls = new Set();
+
+    while ((match = urlRegex.exec(cssText)) !== null) {
+        let url = match[1];
+        if (!fetchedUrls.has(url)) { // avoid duplicates
+            fetchedUrls.add(url);
+            // Resolve relative path
+            const fontUrl = new URL(url, cssPath).href;
+            try {
+                const resp = await fetch(fontUrl);
+                if (!resp.ok) continue;
+                const buffer = await resp.arrayBuffer();
+                fontsFolder.file(url.replace(/^.*[\\/]/, ""), buffer); // save with filename only
+            } catch (err) {
+                console.warn(`Failed to fetch font: ${fontUrl}`);
+            }
         }
     }
 
-    // Generate zip and trigger download
+    // Generate zip and download
     const blob = await zip.generateAsync({ type: "blob" });
-    saveAs(blob, `${familyName}.zip`);
+    saveAs(blob, "PTMono.zip");
 }
 
 function getDynamicDomain() {

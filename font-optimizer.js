@@ -319,38 +319,7 @@ function generateCSS(fontInfo, successfulSubsets, totalOriginalSize) {
 
 `;
     });
-
-    // 添加统计信息和使用说明
-    const compressionRatio =
-        totalOriginalSize > 0 ? (((totalOriginalSize - totalSubsetSize) / totalOriginalSize) * 100).toFixed(1) : 0;
-
-    css += `/*
- * 📊 统计信息:
- * - 原始大小: ${(totalOriginalSize / (1024 * 1024)).toFixed(2)}MB
- * - 子集总大小: ${(totalSubsetSize / (1024 * 1024)).toFixed(2)}MB
- * - 压缩比: ${compressionRatio}%
- * - 子集数量: ${Object.keys(successfulSubsets).length}
- *
- * 🎯 使用方法:
- * .chinese-text {
- *   font-family: '${fontName}', 'PingFang SC', 'Hiragino Sans GB', 
- *                'Microsoft YaHei', 'Source Han Sans CN', sans-serif;
- *   font-weight: ${fontWeight};
- *   font-style: ${fontStyle};
- * }
- *
- * .english-text {
- *   font-family: '${fontName}', 'Helvetica Neue', Arial, sans-serif;
- *   font-weight: ${fontWeight};
- *   font-style: ${fontStyle};
- * }
- *
- * 💡 优化建议:
- * - 浏览器会根据文本内容自动选择相应的字体子集
- * - 建议配合 font-display: swap 提升加载体验
- * - 可以设置适当的缓存策略优化重复访问性能
- */`;
-
+    
     return css;
 }
 
