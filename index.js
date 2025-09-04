@@ -14,24 +14,23 @@ async function downloadFonts(cssPath) {
     const fetchedUrls = new Set();
 
     while ((match = urlRegex.exec(cssText)) !== null) {
-        let url = match[1].replace(/^\.\//, './fonts/'); // remove leading ./
+        let name  = match[1].replace(/^\.\//, '');
+        let url = match[1].replace(/^\.\//, './fonts/');
         if (!fetchedUrls.has(url)) { // avoid duplicates
             fetchedUrls.add(url);
-            // Resolve relative path
-            const fontUrl = new URL(url, cssPath).href;
             try {
-                const resp = await fetch(fontUrl);
+                const resp = await fetch(url);
                 if (!resp.ok) continue;
                 const buffer = await resp.arrayBuffer();
-                fontsFolder.file(url.replace(/^.*[\\/]/, ""), buffer); // save with filename only
+                fontsFolder.file(name, buffer); // save with filename only
             } catch (err) {
-                console.warn(`Failed to fetch font: ${fontUrl}`);
+                console.warn(`Failed to fetch font: ${url}`);
             }
         }
     }
     // Generate zip and download
     const blob = await zip.generateAsync({ type: "blob" });
-    saveAs(blob, "PTMono.zip");
+    saveAs(blob, `${cssPath.split("/").pop()}.zip`);
 }
 
 function getDynamicDomain() {
