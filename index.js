@@ -1,11 +1,12 @@
-async function downloadFonts(cssPath) {
+async function downloadFonts(fontName) {
+    Loading(true);
     const zip = new JSZip();
 
     // Fetch CSS
-    const cssResp = await fetch(`./fonts/${cssPath}.css`);
-    if (!cssResp.ok) throw new Error(`CSS file not found: ${cssPath}`);
+    const cssResp = await fetch(`./fonts/${fontName}.css`);
+    if (!cssResp.ok) throw new Error(`CSS file not found: ${fontName}`);
     const cssText = await cssResp.text();
-    zip.file(cssPath.split("/").pop(), cssText); // add CSS to zip root
+    zip.file(`${fontName}.css`, cssText); // add CSS to zip root
 
     // Parse all url(...) references
     const urlRegex = /url\(['"]?(.+?\.woff2)['"]?\)/g;
@@ -30,7 +31,8 @@ async function downloadFonts(cssPath) {
     }
     // Generate zip and download
     const blob = await zip.generateAsync({ type: "blob" });
-    saveAs(blob, `${cssPath.split("/").pop()}.zip`);
+    saveAs(blob, `${fontName}.zip`);
+    Loading(false);
 }
 
 function getDynamicDomain() {
@@ -45,10 +47,12 @@ function copyToClipboard(type, fontName) {
 		text = `<link rel="preconnect" href="${domain}">\n<link rel="stylesheet" href="${domain}/${fontName}.css">`;
 	} else if (type === 'css') {
 		text = `@import url('${domain}/${fontName}.css');`;
-	}
+	}else{
+        text = fontName
+    }
     
 	navigator.clipboard.writeText(text).then(() => {
-		showToast(`${type.toUpperCase()} 链接已复制到剪贴板！`);
+		showToast(`已复制到剪贴板！`);
 	}).catch(err => {
 		console.error('复制失败:', err);
 		// Fallback method
@@ -58,7 +62,7 @@ function copyToClipboard(type, fontName) {
 		textArea.select();
 		document.execCommand('copy');
 		document.body.removeChild(textArea);
-		showToast(`${type.toUpperCase()} 链接已复制到剪贴板！`);
+		showToast(`已复制到剪贴板！`);
 	});
 }
 
@@ -70,4 +74,14 @@ function showToast(message) {
 	setTimeout(() => {
 		toast.classList.remove('show');
 	}, 3000);
+}
+
+function Loading(show) {
+    const overlay = document.getElementById("loadingOverlay");
+    if (!overlay) return;
+    if (show) {
+        overlay.classList.add("active");
+    } else {
+        overlay.classList.remove("active");
+    }
 }

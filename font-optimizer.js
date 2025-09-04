@@ -337,7 +337,7 @@ function generateIndexHTML(processedFonts) {
             <div class="font-card" style="font-family: '${font.info.familyName}', sans-serif; font-weight: ${font.info.weight}; font-style: ${font.info.style};">
                 <div class="font-header">
                     <div class="font-name">
-                        ${font.info.familyName}
+                        ${font.info.familyName} <span onclick="copyToClipboard('', '${font.info.familyName}')">COPY</span>
                     </div>
                     <div class="font-meta">
                         Weight: ${font.info.weight} | Style: ${font.info.style}
@@ -372,6 +372,13 @@ function generateIndexHTML(processedFonts) {
         </div>
     </div>
     <div class="toast" id="toast"></div>
+    <div class="loading-overlay" id="loadingOverlay">
+        <div class="spinner-wrapper">
+            <div class="spinner1"></div>
+            <div class="spinner2"></div>
+        </div>
+        <div class="loading-text" style="font-family: '思源黑体'">Processing...</div>
+    </div>
 </body>
 </html>`;
 }
