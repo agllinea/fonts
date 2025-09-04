@@ -3,10 +3,6 @@ import { promises as fs } from "fs";
 import { readFileSync } from "fs";
 import path from "path";
 
-console.log("=".repeat(60));
-console.log("🔤 完整版字体子集化工具");
-console.log("=".repeat(60));
-
 // 解析命令行参数
 const args = process.argv.slice(2);
 const config = {};
@@ -21,8 +17,9 @@ for (let i = 0; i < args.length; i += 2) {
 
 const inputDir = config.input || "./src";
 const outputDir = config.output || "./fonts";
-const mode = config.mode || "minimal"; // standard, minimal, full
+const mode = config.mode || "standard"; // standard, minimal, full
 
+console.log("=".repeat(60));
 console.log(`📁 输入目录: ${inputDir}`);
 console.log(`📁 输出目录: ${outputDir}`);
 console.log(`⚙️ 处理模式: ${mode}`);
@@ -235,22 +232,13 @@ async function subsetFont(inputPath, outputPath, unicodeRange, subsetTool, subse
         console.log(`    📄 处理: ${subsetName}`);
 
         if (await fs.stat(outputPath).catch(() => false)) {
-            console.log(`    字体文件已存在: ${path.basename(outputPath)}。跳过。`);
             return { success: true, size: 0 };
         }
 
         execSync(command, { stdio: "pipe" });
 
-        // 检查文件是否生成并获取大小
+        // 检查文件是否生成
         const stats = await fs.stat(outputPath);
-        const sizeKB = Math.round(stats.size / 1024);
-        const sizeMB = (stats.size / (1024 * 1024)).toFixed(2);
-
-        if (sizeKB > 1024) {
-            console.log(`    ✅ ${subsetName}: ${sizeMB}MB`);
-        } else {
-            console.log(`    ✅ ${subsetName}: ${sizeKB}KB`);
-        }
 
         return { success: true, size: stats.size };
     } catch (error) {
@@ -260,15 +248,13 @@ async function subsetFont(inputPath, outputPath, unicodeRange, subsetTool, subse
 }
 
 // 生成CSS
-function generateCSS(fontInfo, successfulSubsets, totalOriginalSize) {
+function generateCSS(fontInfo, successfulSubsets) {
     const fontName = fontInfo.familyName;
     const fontWeight = fontInfo.weight;
     const fontStyle = fontInfo.style;
 
     let css = `/* 
  * ${fontName} 字体子集
- * 生成时间: ${new Date().toISOString()}
- * 处理模式: ${mode}
  * 字体信息: ${fontInfo.fullName} (Weight: ${fontWeight}, Style: ${fontStyle})
  * 子集数量: ${Object.keys(successfulSubsets).length}
  */\n\n`;
@@ -332,7 +318,8 @@ function generateIndexHTML(processedFonts) {
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Fonts 字体库</title>
+    <title>Fonts 字体库</title>    
+    <script src="./index.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/FileSaver.js/2.0.5/FileSaver.min.js"></script>
     <link rel="stylesheet" href="./index.css">
@@ -385,9 +372,6 @@ function generateIndexHTML(processedFonts) {
         </div>
     </div>
     <div class="toast" id="toast"></div>
-    <script>
-        ${indexJSContent}
-    </script>
 </body>
 </html>`;
 }
@@ -396,22 +380,19 @@ function generateIndexHTML(processedFonts) {
 async function main() {
     try {
         // 检查工具
-        console.log("\n🔍 检查必需工具...");
         const subsetTool = checkPyftsubset();
         if (!subsetTool) {
-            console.error("\n❌ 错误: 需要安装 fonttools");
+            console.error("\n❌ 需要安装 fonttools");
             console.log("📦 安装命令:");
             console.log("   pip install fonttools[woff]");
             console.log("   # 或者");
             console.log("   python -m pip install fonttools[woff]");
             return;
         }
-        console.log(`✅ 找到工具: ${subsetTool}`);
 
         // 检查ttx工具 (用于字体信息提取)
         try {
             execSync("python -m fontTools.ttx -h", { stdio: "ignore" });
-            console.log("✅ 找到 ttx 工具");
         } catch {
             console.error("❌ 错误: ttx 工具未找到，这是 fonttools 的一部分");
             console.log("📦 请确保正确安装了 fonttools[woff]");
@@ -419,11 +400,9 @@ async function main() {
         }
 
         // 检查输入目录
-        console.log("\n📂 检查输入目录...");
         let files;
         try {
             files = await fs.readdir(inputDir);
-            console.log(`✅ 读取成功，包含 ${files.length} 个文件`);
         } catch (error) {
             console.error(`❌ 无法读取输入目录: ${error.message}`);
             return;
@@ -435,10 +414,8 @@ async function main() {
             return [".woff2", ".ttf", ".otf"].includes(ext);
         });
 
-        console.log(`🔤 找到 ${fontFiles.length} 个字体文件:`);
         fontFiles.forEach((file, i) => {
             const ext = path.extname(file);
-            console.log(`   ${i + 1}. ${file} ${ext.toUpperCase()}`);
         });
 
         if (fontFiles.length === 0) {
@@ -447,9 +424,7 @@ async function main() {
         }
 
         // 创建输出目录
-        console.log("\n📁 准备输出目录...");
         await fs.mkdir(outputDir, { recursive: true });
-        console.log(`✅ 输出目录就绪: ${outputDir}`);
 
         // 获取当前模式的子集配置
         const subsets = subsetModes[mode] || subsetModes.standard;
@@ -457,7 +432,6 @@ async function main() {
         Object.keys(subsets).forEach((subset) => console.log(`   - ${subset}`));
 
         // 处理每个字体文件
-        console.log("\n🚀 开始处理字体文件...");
 
         const processedFonts = [];
 
@@ -469,21 +443,19 @@ async function main() {
             console.log(`🔍 处理字体 ${i + 1}/${fontFiles.length}: ${fontFile}`);
 
             // 获取字体信息
-            console.log("📋 分析字体信息...");
             const fontInfo = await GetFontInfo(fontPath);
 
             if (fontInfo.success) {
-                console.log(`✅ 字体信息:`);
                 console.log(`   🏷️ 家族名称: ${fontInfo.familyName}`);
                 console.log(`   ⚖️ 字重: ${fontInfo.weight}`);
                 console.log(`   📐 样式: ${fontInfo.style}`);
+            }else{
                 console.log(`   ❓ 错误: ${fontInfo.error}`);
             }
 
             // 获取原文件大小
             const originalStats = await fs.stat(fontPath);
             const originalSizeMB = (originalStats.size / (1024 * 1024)).toFixed(2);
-            console.log(`📏 原始大小: ${originalSizeMB}MB`);
 
             const successfulSubsets = {};
             let totalSubsetSize = 0;
@@ -505,18 +477,13 @@ async function main() {
 
             // 生成CSS文件
             if (Object.keys(successfulSubsets).length > 0) {
-                const css = generateCSS(fontInfo, successfulSubsets, originalStats.size);
+                const css = generateCSS(fontInfo, successfulSubsets);
                 const cssFileName = fontInfo.postScriptName || fontInfo.familyName.replace(/\s+/g, '');
                 const cssPath = path.join(outputDir, `${cssFileName}.css`);
                 await fs.writeFile(cssPath, css, "utf8");
 
                 const savedSizeMB = ((originalStats.size - totalSubsetSize) / (1024 * 1024)).toFixed(2);
                 const savedPercent = (((originalStats.size - totalSubsetSize) / originalStats.size) * 100).toFixed(1);
-
-                console.log(`\n📊 ${fontInfo.familyName} 处理结果:`);
-                console.log(`   ✅ 成功子集: ${Object.keys(successfulSubsets).length}`);
-                console.log(`   💾 节省空间: ${savedSizeMB}MB (${savedPercent}%)`);
-                console.log(`   📄 生成文件: ${cssFileName}.css`);
 
                 // 添加到处理过的字体列表
                 processedFonts.push({
@@ -537,33 +504,12 @@ async function main() {
             const indexHTML = generateIndexHTML(processedFonts);
             const indexPath = path.join(".", 'index.html');
             await fs.writeFile(indexPath, indexHTML, 'utf8');
-            console.log(`\n🌐 生成索引页面: index.html`);
         }
 
         // 显示最终结果
         console.log("\n" + "=".repeat(60));
         console.log("🎉 所有字体处理完成！");
         console.log("=".repeat(60));
-
-        const outputFiles = await fs.readdir(outputDir);
-        const woff2Files = outputFiles.filter((f) => f.endsWith(".woff2"));
-        const cssFiles = outputFiles.filter((f) => f.endsWith(".css"));
-
-        console.log(`\n📈 生成统计:`);
-        console.log(`   🔤 字体文件: ${woff2Files.length}`);
-        console.log(`   📄 CSS文件: ${cssFiles.length}`);
-        console.log(`   🌐 索引页面: 1`);
-        console.log(`   📁 输出目录: ${outputDir}`);
-
-        console.log(`\n🚀 下一步操作:`);
-        console.log(`   1. 将 ${outputDir} 目录复制到你的Web服务器`);
-        console.log(`   2. 打开 index.html 浏览和复制字体链接`);
-        console.log(`   3. 像使用 Google Fonts 一样使用这些字体`);
-
-        console.log(`\n💡 字体信息提取功能说明:`);
-        console.log(`   - GetFontInfo() 函数可以提取真实的字体族名、字重和样式`);
-        console.log(`   - 生成的CSS会使用正确的font-weight和font-style值`);
-        console.log(`   - 如果ttx解析失败，会从文件名推测字体信息`);
 
     } catch (error) {
         console.error("\n💥 发生错误:", error.message);

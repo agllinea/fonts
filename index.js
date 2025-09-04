@@ -2,7 +2,7 @@ async function downloadFonts(cssPath) {
     const zip = new JSZip();
 
     // Fetch CSS
-    const cssResp = await fetch(cssPath);
+    const cssResp = await fetch(`./fonts/${cssPath}.css`);
     if (!cssResp.ok) throw new Error(`CSS file not found: ${cssPath}`);
     const cssText = await cssResp.text();
     zip.file(cssPath.split("/").pop(), cssText); // add CSS to zip root
@@ -14,7 +14,7 @@ async function downloadFonts(cssPath) {
     const fetchedUrls = new Set();
 
     while ((match = urlRegex.exec(cssText)) !== null) {
-        let url = match[1];
+        let url = match[1].replace(/^\.\//, './fonts/'); // remove leading ./
         if (!fetchedUrls.has(url)) { // avoid duplicates
             fetchedUrls.add(url);
             // Resolve relative path
@@ -29,7 +29,6 @@ async function downloadFonts(cssPath) {
             }
         }
     }
-
     // Generate zip and download
     const blob = await zip.generateAsync({ type: "blob" });
     saveAs(blob, "PTMono.zip");
