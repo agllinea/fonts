@@ -1,10 +1,32 @@
+async function downloadCSS(fontName) {
+    try {
+        Loading(true);
+
+        // Fetch CSS
+        const cssResp = await fetch(`./fonts/${fontName}@css.css`);
+        if (!cssResp.ok) throw new Error("CSS not found");
+        const cssText = await cssResp.text();
+
+        // Create ZIP
+        const zip = new JSZip();
+        zip.file(`${fontName}.css`, cssText);
+
+        // Generate zip and download
+        const blob = await zip.generateAsync({ type: "blob" });
+        saveAs(blob, `${fontName}.zip`);
+    } catch (err) {
+        console.error(`Failed to download CSS ZIP for ${fontName}:`, err);
+    } finally {
+        Loading(false);
+    }
+}
+
 async function downloadFonts(fontName) {
     Loading(true);
     const zip = new JSZip();
 
     // Fetch CSS
     const cssResp = await fetch(`./fonts/${fontName}.css`);
-    if (!cssResp.ok) throw new Error(`CSS file not found: ${fontName}`);
     const cssText = await cssResp.text();
     zip.file(`${fontName}.css`, cssText); // add CSS to zip root
 

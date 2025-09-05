@@ -1,0 +1,40 @@
+🔤 字体子集化工具使用说明
+
+用法:
+    node font-optimizer.js [选项]
+
+选项:
+    --input <目录>     指定输入目录 (默认: ./fonts)
+    --output <目录>    指定输出目录 (默认: ./output)  
+    --mode <模式>      处理模式 (默认: standard)
+
+处理模式:
+    minimal    最精简 - 只包含最基本字符，文件最小
+    standard   标准   - 平衡文件大小和字符覆盖 (推荐)
+    full       完整   - 包含更多字符集，文件较大但覆盖全面
+
+示例:
+    # 使用默认设置
+    node font-optimizer.js
+    
+    # 指定输入输出目录
+    node font-optimizer.js --input ./my-fonts --output ./dist
+    
+    # 使用精简模式
+    node font-optimizer.js --mode minimal --input ./fonts --output ./output
+
+功能特性:
+    ✅ 支持字体格式: WOFF2, TTF, OTF
+    ✅ 自动提取字体信息: 族名、字重、样式
+    ✅ 智能子集分割: 根据使用频率优化加载
+    ✅ 生成完整CSS: 包含正确的font-face声明
+    ✅ 可视化界面: 生成字体库索引页面
+
+需要安装: 
+    pip install fonttools[woff]
+
+GetFontInfo 函数:
+    - 使用ttx工具解析字体name表获取真实信息
+    - 返回字体族名、字重(100-900)、样式(normal/italic)
+    - 支持PostScript名称和全名提取
+    - 解析失败时从文件名推测信息
