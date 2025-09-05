@@ -9,7 +9,7 @@
   font-style: normal;
   font-weight: 400;
   font-display: swap;
-  src: url('https://fonts.agllinea.com/fonts//PTMono-Regular-latin.woff2') format('woff2');
+  src: url('https://fonts.agllinea.com/fonts/PTMono-Regular-latin.woff2') format('woff2');
   unicode-range: U+0000-00FF,U+0131,U+0152-0153,U+02BB-02BC,U+02C6,U+02DA,U+02DC;
 }
 
@@ -18,7 +18,7 @@
   font-style: normal;
   font-weight: 400;
   font-display: swap;
-  src: url('https://fonts.agllinea.com/fonts//PTMono-Regular-latin-ext.woff2') format('woff2');
+  src: url('https://fonts.agllinea.com/fonts/PTMono-Regular-latin-ext.woff2') format('woff2');
   unicode-range: U+0100-024F,U+0259,U+1E00-1EFF,U+2020,U+20A0-20AB,U+20AD-20CF,U+2113,U+2C60-2C7F,U+A720-A7FF;
 }
 
@@ -27,7 +27,7 @@
   font-style: normal;
   font-weight: 400;
   font-display: swap;
-  src: url('https://fonts.agllinea.com/fonts//PTMono-Regular-numbers.woff2') format('woff2');
+  src: url('https://fonts.agllinea.com/fonts/PTMono-Regular-numbers.woff2') format('woff2');
   unicode-range: U+0030-0039,U+FF10-FF19;
 }
 
@@ -36,7 +36,7 @@
   font-style: normal;
   font-weight: 400;
   font-display: swap;
-  src: url('https://fonts.agllinea.com/fonts//PTMono-Regular-symbols.woff2') format('woff2');
+  src: url('https://fonts.agllinea.com/fonts/PTMono-Regular-symbols.woff2') format('woff2');
   unicode-range: U+2000-206F,U+2070-209F,U+20A0-20CF,U+2100-214F;
 }
 
@@ -45,7 +45,7 @@
   font-style: normal;
   font-weight: 400;
   font-display: swap;
-  src: url('https://fonts.agllinea.com/fonts//PTMono-Regular-cjk-symbols.woff2') format('woff2');
+  src: url('https://fonts.agllinea.com/fonts/PTMono-Regular-cjk-symbols.woff2') format('woff2');
   unicode-range: U+3000-303F,U+FF00-FFEF,U+2E80-2EFF,U+31C0-31EF;
 }
 
@@ -54,7 +54,7 @@
   font-style: normal;
   font-weight: 400;
   font-display: swap;
-  src: url('https://fonts.agllinea.com/fonts//PTMono-Regular-cjk-basic.woff2') format('woff2');
+  src: url('https://fonts.agllinea.com/fonts/PTMono-Regular-cjk-basic.woff2') format('woff2');
   unicode-range: U+4E00-4FFF;
 }
 
@@ -63,7 +63,7 @@
   font-style: normal;
   font-weight: 400;
   font-display: swap;
-  src: url('https://fonts.agllinea.com/fonts//PTMono-Regular-cjk-common.woff2') format('woff2');
+  src: url('https://fonts.agllinea.com/fonts/PTMono-Regular-cjk-common.woff2') format('woff2');
   unicode-range: U+5000-5FFF;
 }
 
@@ -72,7 +72,7 @@
   font-style: normal;
   font-weight: 400;
   font-display: swap;
-  src: url('https://fonts.agllinea.com/fonts//PTMono-Regular-cjk-extended-1.woff2') format('woff2');
+  src: url('https://fonts.agllinea.com/fonts/PTMono-Regular-cjk-extended-1.woff2') format('woff2');
   unicode-range: U+6000-6FFF;
 }
 
@@ -81,7 +81,7 @@
   font-style: normal;
   font-weight: 400;
   font-display: swap;
-  src: url('https://fonts.agllinea.com/fonts//PTMono-Regular-cjk-extended-2.woff2') format('woff2');
+  src: url('https://fonts.agllinea.com/fonts/PTMono-Regular-cjk-extended-2.woff2') format('woff2');
   unicode-range: U+7000-7FFF;
 }
 
@@ -90,7 +90,7 @@
   font-style: normal;
   font-weight: 400;
   font-display: swap;
-  src: url('https://fonts.agllinea.com/fonts//PTMono-Regular-cjk-extended-3.woff2') format('woff2');
+  src: url('https://fonts.agllinea.com/fonts/PTMono-Regular-cjk-extended-3.woff2') format('woff2');
   unicode-range: U+8000-8FFF;
 }
 
@@ -99,7 +99,7 @@
   font-style: normal;
   font-weight: 400;
   font-display: swap;
-  src: url('https://fonts.agllinea.com/fonts//PTMono-Regular-cjk-extended-4.woff2') format('woff2');
+  src: url('https://fonts.agllinea.com/fonts/PTMono-Regular-cjk-extended-4.woff2') format('woff2');
   unicode-range: U+9000-9FFF;
 }
 
@@ -108,7 +108,7 @@
   font-style: normal;
   font-weight: 400;
   font-display: swap;
-  src: url('https://fonts.agllinea.com/fonts//PTMono-Regular-cjk-ext-a.woff2') format('woff2');
+  src: url('https://fonts.agllinea.com/fonts/PTMono-Regular-cjk-ext-a.woff2') format('woff2');
   unicode-range: U+3400-4DBF;
 }
 
@@ -117,7 +117,7 @@
   font-style: normal;
   font-weight: 400;
   font-display: swap;
-  src: url('https://fonts.agllinea.com/fonts//PTMono-Regular-hiragana.woff2') format('woff2');
+  src: url('https://fonts.agllinea.com/fonts/PTMono-Regular-hiragana.woff2') format('woff2');
   unicode-range: U+3040-309F;
 }
 
@@ -126,7 +126,7 @@
   font-style: normal;
   font-weight: 400;
   font-display: swap;
-  src: url('https://fonts.agllinea.com/fonts//PTMono-Regular-katakana.woff2') format('woff2');
+  src: url('https://fonts.agllinea.com/fonts/PTMono-Regular-katakana.woff2') format('woff2');
   unicode-range: U+30A0-30FF;
 }
 
@@ -135,7 +135,7 @@
   font-style: normal;
   font-weight: 400;
   font-display: swap;
-  src: url('https://fonts.agllinea.com/fonts//PTMono-Regular-korean.woff2') format('woff2');
+  src: url('https://fonts.agllinea.com/fonts/PTMono-Regular-korean.woff2') format('woff2');
   unicode-range: U+AC00-D7AF,U+1100-11FF,U+3130-318F;
 }
 
@@ -144,7 +144,7 @@
   font-style: normal;
   font-weight: 400;
   font-display: swap;
-  src: url('https://fonts.agllinea.com/fonts//PTMono-Regular-greek.woff2') format('woff2');
+  src: url('https://fonts.agllinea.com/fonts/PTMono-Regular-greek.woff2') format('woff2');
   unicode-range: U+0370-03FF;
 }
 
@@ -153,7 +153,7 @@
   font-style: normal;
   font-weight: 400;
   font-display: swap;
-  src: url('https://fonts.agllinea.com/fonts//PTMono-Regular-cyrillic.woff2') format('woff2');
+  src: url('https://fonts.agllinea.com/fonts/PTMono-Regular-cyrillic.woff2') format('woff2');
   unicode-range: U+0400-045F,U+0490-0491,U+04B0-04B1,U+2116;
 }
 

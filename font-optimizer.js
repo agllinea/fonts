@@ -1,8 +1,9 @@
 import { execSync } from "child_process";
 import { promises as fs } from "fs";
-import { readFileSync, existsSync } from "fs";
+import { existsSync, readFileSync } from "fs";
 import path from "path";
-import { priority, subsetModes, HTTPS_DOMAIN, sortFonts } from "./config.js";
+
+import { HTTPS_DOMAIN, priority, sortFonts, subsetModes } from "./config.js";
 
 // 解析命令行参数
 const args = process.argv.slice(2);
@@ -237,7 +238,7 @@ function generateCSS(fontInfo, successfulSubsets) {
   font-style: ${fontStyle};
   font-weight: ${fontWeight};
   font-display: swap;
-  src: url('${HTTPS_DOMAIN}/${fileName}') format('woff2');
+  src: url('${HTTPS_DOMAIN}${fileName}') format('woff2');
   unicode-range: ${data.range};
 }
 
